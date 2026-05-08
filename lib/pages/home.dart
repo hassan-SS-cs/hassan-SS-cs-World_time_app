@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map? ?? {};
+     args = args.isNotEmpty ? args: ModalRoute.of(context)?.settings.arguments as Map? ?? {};
     print(args);
 
 
@@ -35,8 +35,17 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/location');
+                  onPressed: () async {
+                dynamic result= await Navigator.pushNamed(context, '/location');
+                setState(() {
+                  args = {
+                    'time':result['time'],
+                    'location': result['location'],
+                    'isDaytime':result['isDaytime'],
+                    'flag':result['flag']
+                    
+                  };
+                });
                   },
                   icon: Icon(
                     Icons.edit_location,
